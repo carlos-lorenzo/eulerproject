@@ -45,8 +45,7 @@ def find_nth_prime(n: int) -> int:
     while n_found != n:
         current_num += 1
         if is_prime(current_num):
-            if n_found % 100 == 0:
-                print(f"{n_found}. {current_num} is prime.")
+            
             n_found += 1
          
         
