@@ -3,7 +3,6 @@ Problem 5:
 What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20 ?
 """
 
-import math
 from typing import List, Dict
 
     
@@ -18,15 +17,19 @@ def find_prime_factors(n: int) -> List[int]:
         List[int]: List containing all the prime factors
     """
     
-    
+     
+    i = 2
     factors = []
-    f = 2 #current factor
-    while f < math.sqrt(n):
-        while n % f == 0:
-            n = n/f
-            factors.append(f)
-        f += 1
-    factors.append(n)
+    while i * i <= n:
+        if n % i != 0:
+            i += 1
+        else:
+            n //= i
+            factors.append(i)
+            
+    if n > 1:
+        factors.append(n)
+        
     return factors
 
 
@@ -63,6 +66,6 @@ def find_lcm(a, b) -> int:
         
     return lcm
             
-    
-print(find_lcm(2, 20)) # 1 not necessary
+
+print(find_lcm(2, 20))
 
