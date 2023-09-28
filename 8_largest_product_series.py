@@ -1,6 +1,6 @@
 """
 Problem 8:
-Find the largest product of 13 digits in a grid
+Find the largest product of 13 digits in a series
 """
 
 from typing import List
@@ -19,7 +19,7 @@ def largest_product(slice: int) -> int:
     """
     
     
-    grid = """
+    series = """
             73167176531330624919225119674426574742355349194934
             96983520312774506326239578318016984801869478851843
             85861560789112949495459501737958331952853208805511
@@ -42,7 +42,7 @@ def largest_product(slice: int) -> int:
             71636269561882670428252483600823257530420752963450
             """
             
-    nums = [int(num) for num in grid if num in [str(digit) for digit in range(0, 10)]]
+    nums = [int(num) for num in series if num in [str(digit) for digit in range(0, 10)]]
     largest_product = 0
     current_product = 0
     
