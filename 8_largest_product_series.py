@@ -12,10 +12,10 @@ def largest_product(slice: int) -> int:
     Finds the 
 
     Args:
-        slice (int): _description_
+        slice (int): Amount of numbers to check
 
     Returns:
-        int: _description_
+        int: Largets product
     """
     
     
