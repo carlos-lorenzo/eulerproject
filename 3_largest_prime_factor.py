@@ -25,9 +25,9 @@ def prime_factors(n: int) -> List[int]:
             factors.append(f)
         f += 1
     factors.append(n)
-    return max(factors)
+    return factors
 
 
-print(prime_factors(600851475143)) # Largest prime factor => max in list
+print(max(prime_factors(600851475143))) # Largest prime factor => max in list
 
 

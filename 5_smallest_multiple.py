@@ -2,54 +2,67 @@
 Problem 5:
 What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20 ?
 """
-from functools import lru_cache
 
+import math
+from typing import List, Dict
 
-@lru_cache(maxsize = 128)
-def is_divisible(n: int, a: int, b: int) -> bool:
+    
+def find_prime_factors(n: int) -> List[int]:
     """
-    Checks if a number (n) is divisible (has no remainder) by all numbers from a to b
+    Find the prime factors a number n
 
     Args:
-        n (int): Number to be divided
-        a (int): Smallest number to be checked (inclusive)
-        b (int): Largest number to be checked (inclusive)
+        n (int): Number for which to find prime factors
 
     Returns:
-        bool: Weather or not the number is evenly divisible
+        List[int]: List containing all the prime factors
     """
     
     
-    for i in range(a, (b+1)):
-       if n % i != 0:
-            return False
+    factors = []
+    f = 2 #current factor
+    while f < math.sqrt(n):
+        while n % f == 0:
+            n = n/f
+            factors.append(f)
+        f += 1
+    factors.append(n)
+    return factors
+
+
+def simplify(factors: List[int]) -> Dict[str, int]:
+    simplified = {}
     
-    return True
-
-
-@lru_cache(maxsize = 128)
-def find_smallest_divisble(a: int, b: int) -> int:
-    """
-    Finds the smallest number that can be divided evenly (no remainder) by all numbers from a to b
-
-    Args:
-        a (int): Smallest number to be checked (inclusive)
-        b (int): Largest number to be checked (inclusive)
-
-    Returns:
-        int: The smallest number found
-    """
-    
-    n = b
-    while True:
-        if is_divisible(n, a, b):
-            break
+    for factor in factors:
+        if factor not in simplified.keys():
+            simplified[factor] = 1
         
-        n += 1
+        else:
+            simplified[factor] += 1
+
+    return simplified
+
+def find_lcm(a, b) -> int:
+
+    prime_factors = [find_prime_factors(i) for i in range(a, b+1)]
+    factors = [simplify(factors) for factors in prime_factors]
+    largest_factors = {}
+    lcm = 1
+    
+    for simplified_factors in factors:
+        for base, exponent in simplified_factors.items():
+            if base not in largest_factors:
+                largest_factors[base] = exponent
+            
+            else:
+                if exponent > largest_factors[base]:
+                    largest_factors[base] = exponent
+                    
+    for base, exponent in largest_factors.items():
+        lcm *= base**exponent
         
-    return n
-
-
-
-print(find_smallest_divisble(2, 20)) # 1 not necessary
+    return lcm
+            
+    
+print(find_lcm(2, 20)) # 1 not necessary
 
