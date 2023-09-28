@@ -16,7 +16,7 @@ def is_prime(n: int) -> bool:
         bool: Is prime? True/False
     """
     
-    for factor in range(2, n):
+    for factor in range(2, int(sqrt(n)+1)):
         if n % factor == 0:
             return False
         
