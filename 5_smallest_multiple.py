@@ -3,9 +3,10 @@ Problem 5:
 What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20 ?
 """
 
+
 from typing import List, Dict
 
-    
+
 def find_prime_factors(n: int) -> List[int]:
     """
     Find the prime factors a number n
@@ -34,6 +35,15 @@ def find_prime_factors(n: int) -> List[int]:
 
 
 def simplify(factors: List[int]) -> Dict[str, int]:
+    """
+    Collects factors into dictionary, key - base, value - exponent
+
+    Args:
+        factors (List[int]): List containing individual prime factors (20 - [2, 2, 5])
+
+    Returns:
+        Dict[str, int]: Dictionary containing prime factors (20 - {2: 2, 5: 1})
+    """
     simplified = {}
     
     for factor in factors:
@@ -45,8 +55,17 @@ def simplify(factors: List[int]) -> Dict[str, int]:
 
     return simplified
 
-def find_lcm(a, b) -> int:
+def find_lcm(a: int, b: int) -> int:
+    """
+    Find lowest common multiple of all number between two numbers inclusive
 
+    Args:
+        a (int): min number (inclusive)
+        b (int): max number (inclusive)
+
+    Returns:
+        int: LCM
+    """
     prime_factors = [find_prime_factors(i) for i in range(a, b+1)]
     factors = [simplify(factors) for factors in prime_factors]
     largest_factors = {}
