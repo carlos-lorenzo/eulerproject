@@ -5,7 +5,7 @@ What is the smallest positive number that is evenly divisible by all of the numb
 
 
 from typing import List, Dict
-
+from time import perf_counter
 
 def find_prime_factors(n: int) -> List[int]:
     """
@@ -85,6 +85,9 @@ def find_lcm(a: int, b: int) -> int:
         
     return lcm
             
-
+start = perf_counter()
 print(find_lcm(2, 20))
+end = perf_counter()
+
+print(f"Elapsed: {round(((end - start) * 1000), 2)} ms.")
 
