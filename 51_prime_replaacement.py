@@ -1,4 +1,11 @@
 import math
+from tqdm import tqdm
+from typing import List
+
+
+searched = set()
+wildcards = []
+primes = []
 
 def sieve_eratosthenes(n: int) -> int:
     """
@@ -39,17 +46,38 @@ def sieve_eratosthenes(n: int) -> int:
                 return p
 
 
-def replace_repeated_with_asterisk(n: int) -> str:
-    digits_seen = set()
+
+    digits_count = {}
     result = []
+    
     for digit in str(n):
-        if digit in digits_seen:
+        if digit in digits_count:
+            digits_count[digit] += 1
+        else:
+            digits_count[digit] = 1
+
+    for digit in str(n):
+        if digits_count[digit] > 1:
             result.append('*')
         else:
             result.append(digit)
-            digits_seen.add(digit)
+    
     return ''.join(result)
 
+
+# generate every possible wildcard strings
+def generate_wildcards(s, index):
+   
+    if index > 0 and s not in searched:
+        wildcards.append(s)
+        searched.add(s)
+    for x in range(index, len(s)):
+        generate_wildcards(createPlaceholder(s, x), x+1)
+    
+    return wildcards
+# replace a character with '*'
+def createPlaceholder(s, index):
+    return s[0:index] + '*' + s[index+1:]
 
 def is_prime(n: int) -> bool:
     """
@@ -68,20 +96,46 @@ def is_prime(n: int) -> bool:
         
     return True
 
-def get_prime_family(formated_n: str, desired: int) -> int:
-    primes = 1
-    for i in range(10):
-        
-        if 10 - (i + 10) < desired - primes:
-            return False
-        
-        if is_prime(int("".join([str(i) if char == "*" else char for char in formated_n]))):
-            primes += 1
-            
-        
-            
-            
-            
-        
-get_prime_family("1**0")
+   
 
+    
+         
+     
+     
+FAMILY = 8
+   
+for x in tqdm(range(12000, 130000)):
+    found = False
+    for i in range(0, len(primes)):
+        if x % primes[i] == 0:
+            found = True
+            break
+        if primes[i] * primes[i] > x:
+            break
+    if not found:
+        primes.append(x)
+                
+
+
+
+for prime in primes:
+    wildcards = []
+    generate_wildcards(str(prime), 0)
+    
+    for match in wildcards:
+        
+        count = 0
+        # fill up the asterisk with 0-9
+        for z in range(0, 10):
+            num = int(match.replace('*', str(z)))
+            if len(str(num)) < len(match):
+                continue
+            if is_prime(num):
+                count += 1
+        # if counter is at least 8 then print and exit program
+        if count >= 8:
+            print(prime)
+            print(match)
+            exit(0)
+
+            
