@@ -1,45 +1,42 @@
 from tqdm import tqdm
 from time import perf_counter
+import math
+from typing import Dict
 
-def triplets_of_sum(n: int) -> int:
-    triplets = set()
+def generate_triplets(max_length: int) -> Dict[int, int]:
+	combinations = {}
+	
+	
+	for m in range(2, int(math.sqrt(max_length))):
+		for n in range(1, m):
+			
+			if (m + n) % 2 != 1:
+				continue
+			
+			if math.gcd(m, n) != 1:
+				continue
+			
+			
+			a = m*m - n*n
+			b = 2 * m * n
+			c = m*m + n*n
+			s = a + b + c
+			
+			k = 1
+			while k*s <= max_length:
+				combinations[s*k] = combinations.get((s*k), 0) + 1
+				k += 1
     
-    for a in range(1, n // 3 + 1):
-        # Calculate value of b
-        b = (n * n - 2 * n * a) // (2 * n - 2 * a)
- 
-        # The value of c = n - a - b
-        c = n - a - b
-        
-        if a * a + b * b == c * c and b > 0 and c > 0:
-            triplet = tuple(sorted([a, b, c]))
-            if triplet not in triplets:
-                if len(triplets) == 1:
-                    return 2
-                
-                triplets.add(triplet)
-            
-    return len(triplets)
+	return combinations
 
-def count_triangles(start, end):
-    num_triangles = 0
-    for l in range(start, end):
-        if triplets_of_sum(l) == 1:
-            num_triangles += 1
-    return num_triangles
 
-if __name__ == '__main__':
-    
-    
-    lower_limit = 12
-    upper_limit = 15000
-    
-    
-    
-    start = perf_counter()
-    total_triangles = count_triangles(lower_limit, upper_limit)
-    end = perf_counter()
-    
-    
-    print("Total number of triangles:", total_triangles)
-    print(f"Elapsed: {round((end - start), 2)} s")
+def get_unique(max_length: int) -> int:
+	combinations = generate_triplets(max_length=max_length)
+	
+	return len([s for s in combinations.values() if s == 1])
+
+start = perf_counter()
+print(get_unique(1500000))
+end = perf_counter()
+print(f"Elapsed: {round(end - start, 2)} s")
+
