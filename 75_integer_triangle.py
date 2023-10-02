@@ -3,7 +3,7 @@ from typing import Dict
 
 def generate_triplets(max_length: int) -> Dict[int, int]:
 	"""
-	Finds all pythagorean triplets up until a given sum
+	Finds all pythagorean triplets up until a given sum using eucledian equations
 	
 	Args:
 		max_length (int): Max sum of the triplet
@@ -12,7 +12,7 @@ def generate_triplets(max_length: int) -> Dict[int, int]:
 		Dict[int]: Dict containing triplet sum and its count {sum: count}
 	
 	"""
-	combinations = {}
+	combinations: Dict[int, int] = {}
 	
 	
 	for m in range(2, int(math.sqrt(max_length))):
@@ -32,7 +32,8 @@ def generate_triplets(max_length: int) -> Dict[int, int]:
 			
 			k = 1
 			while k*s <= max_length:
-				combinations[s*k] = combinations.get((s*k), 0) + 1
+                # Generates non-primitive triplets
+				combinations[s*k] = combinations.get((s*k), 0) + 1 # .get avoids if (s*k) in combinations
 				k += 1
 	
 	return combinations
@@ -49,7 +50,7 @@ def get_unique(max_length: int) -> int:
 		int: Number of unique triplets
 	"""
 	combinations = generate_triplets(max_length=max_length)
-	print(combinations)
+	
 	return len([s for s in combinations.values() if s == 1])
 
 
