@@ -1,9 +1,17 @@
-from tqdm import tqdm
-from time import perf_counter
 import math
 from typing import Dict
 
 def generate_triplets(max_length: int) -> Dict[int, int]:
+	"""
+	Finds all pythagorean triplets up until a given sum
+	
+	Args:
+		max_length (int): Max sum of the triplet
+
+	Returns:
+		Dict[int]: Dict containing triplet sum and its count {sum: count}
+	
+	"""
 	combinations = {}
 	
 	
@@ -26,17 +34,24 @@ def generate_triplets(max_length: int) -> Dict[int, int]:
 			while k*s <= max_length:
 				combinations[s*k] = combinations.get((s*k), 0) + 1
 				k += 1
-    
+	
 	return combinations
 
 
 def get_unique(max_length: int) -> int:
+	"""
+	Gets the amount of unique pythagorean triplets (only one triplet with a given sum)
+
+	Args:
+		max_length (int): The maximum sum
+
+	Returns:
+		int: Number of unique triplets
+	"""
 	combinations = generate_triplets(max_length=max_length)
-	
+	print(combinations)
 	return len([s for s in combinations.values() if s == 1])
 
-start = perf_counter()
-print(get_unique(1500000))
-end = perf_counter()
-print(f"Elapsed: {round(end - start, 2)} s")
+
+print(get_unique(150000))
 
