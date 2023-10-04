@@ -1,3 +1,10 @@
+"""
+Problem 11:
+What is the greatest product of four adjacent numbers in the same direction (up, down, left, right, or diagonally) 
+in the 20 x 20 grid?
+"""
+
+
 from dataclasses import dataclass, field
 from typing import List, Tuple
 
@@ -5,10 +12,29 @@ import math
 
 
 def format_grid(grid: str) -> List[List[int]]:
+    """
+    Converts a grid in string form to a 2D list of integers
+
+    Args:
+        grid (str): String representing a grid, \n represent rows, spaces row elements / columns
+
+    Returns:
+        List[List[int]]: 2D list (grid)
+    """
     return [[int(num) for num in row] for row in [row.split(" ") for row in grid.split("\n")]]
 
 @dataclass
 class Grid:
+    """
+    Grid object to compute largest product in any given direction of n amount of numbers
+
+    Args:
+        grid (List[List[int]]): 2D list (grid)
+        
+    Properties:
+        grid (List[List[int]]): 2D list (grid)
+        size (Tuple[int]): Tuple containing amount of rows and row length
+    """
     grid: List[List[int]] = field(default_factory=list)
     size: Tuple[int] = field(init=False, default_factory=tuple)
     
@@ -17,7 +43,15 @@ class Grid:
         
         
     def largest_horizontal_product(self, slice_size: int) -> int:
-        
+        """
+        Compute largest horizontal product
+
+        Args:
+            slice_size (int): Amount of numbers to use to find product
+
+        Returns:
+            int: Largest product
+        """
         largest_product = 0
         for row in self.grid:
             for i in range(len(row[:-slice_size+1])):
@@ -31,6 +65,16 @@ class Grid:
     
     
     def largest_vertical_product(self, slice_size: int) -> int:
+        """
+        Compute largest vertical product
+
+        Args:
+            slice_size (int): Amount of numbers to use to find product
+
+        Returns:
+            int: Largest product
+        """
+        
         largest_product = 0
         for i in range(self.size[0]):
             column = [row[i] for row in self.grid]
@@ -46,20 +90,17 @@ class Grid:
                 
         return largest_product
     
-    def largest_negative_diagonal(self, slice_size: int) -> int:
-        largest_product = 0
-        for i in range(self.size[0] - slice_size + 1):
-            for j in range(self.size[1], slice_size + 1, -1):
-                product = math.prod([self.grid[i+k][j+k] for k in range(slice_size)])
-                
-                if product > largest_product:
-                    largest_product = product
-                
-                
-        return largest_product 
-    
-    
+
     def largest_positive_diagonal(self, slice_size: int) -> int:
+        """
+        Compute largest diagonal (positive gradient) product
+
+        Args:
+            slice_size (int): Amount of numbers to use to find product
+
+        Returns:
+            int: Largest product
+        """
         largest_product = 0
         for i in range(self.size[0] - slice_size + 1):
             for j in range(self.size[1] - slice_size + 1):
@@ -69,10 +110,47 @@ class Grid:
                     largest_product = product
                 
                 
+        return largest_product    
+    
+    def largest_negative_diagonal(self, slice_size: int) -> int:
+        """
+        Compute largest diagonal (negative gradient) product
+
+        Args:
+            slice_size (int): Amount of numbers to use to find product
+
+        Returns:
+            int: Largest product
+        """
+        largest_product = 0
+        
+        
+        for row_index in range(self.size[0] - 1, slice_size - 2, -1):
+            for column_index in range(self.size[1] - slice_size + 1):
+                product = math.prod([self.grid[row_index-k][column_index+k] for k in range(slice_size)])
+                
+                if product > largest_product:
+                    largest_product = product
+                
+                
+           
+                
         return largest_product       
 
-    
-    
+    def largest_product(self, slice_size):
+        """
+        Compute largest product
+
+        Args:
+            slice_size (int): Amount of numbers to use to find product
+
+        Returns:
+            int: Largest product
+        """
+        
+        
+        return max([self.largest_horizontal_product(slice_size), self.largest_vertical_product(slice_size), self.largest_negative_diagonal(slice_size), self.largest_positive_diagonal(slice_size)])
+
     
     
 grid =  """08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
@@ -99,8 +177,7 @@ grid =  """08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
         
 grid = Grid(format_grid(grid))
 
-print(max([grid.largest_horizontal_product(4), grid.largest_vertical_product(4), grid.largest_positive_diagonal(4)]))
-
+print(grid.largest_product(4))
 
 
 
