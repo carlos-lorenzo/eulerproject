@@ -28,7 +28,49 @@ class Grid:
                     largest_product = product
                    
         return largest_product
-        
+    
+    
+    def largest_vertical_product(self, slice_size: int) -> int:
+        largest_product = 0
+        for i in range(self.size[0]):
+            column = [row[i] for row in self.grid]
+            
+            for j in range(self.size[1] - slice_size):
+                
+                product = math.prod(column[j:(j+slice_size)])
+                
+                
+                
+                if product > largest_product:
+                    largest_product = product
+                
+        return largest_product
+    
+    def largest_negative_diagonal(self, slice_size: int) -> int:
+        largest_product = 0
+        for i in range(self.size[0] - slice_size + 1):
+            for j in range(self.size[1], slice_size + 1, -1):
+                product = math.prod([self.grid[i+k][j+k] for k in range(slice_size)])
+                
+                if product > largest_product:
+                    largest_product = product
+                
+                
+        return largest_product 
+    
+    
+    def largest_positive_diagonal(self, slice_size: int) -> int:
+        largest_product = 0
+        for i in range(self.size[0] - slice_size + 1):
+            for j in range(self.size[1] - slice_size + 1):
+                product = math.prod([self.grid[i+k][j+k] for k in range(slice_size)])
+                
+                if product > largest_product:
+                    largest_product = product
+                
+                
+        return largest_product       
+
     
     
     
@@ -55,9 +97,9 @@ grid =  """08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48"""
         
         
-grid = Grid([format_grid(grid)[0]])
+grid = Grid(format_grid(grid))
 
-print(grid.largest_horizontal_product(slice_size=4))
+print(max([grid.largest_horizontal_product(4), grid.largest_vertical_product(4), grid.largest_positive_diagonal(4)]))
 
 
 
